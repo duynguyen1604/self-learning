@@ -187,6 +187,64 @@ await page.getByLabel('Upload file').click();  // Mở dialog chọn file
 const fileChooser = await fileChooserPromise;
 await fileChooser.setFiles(path.join(__dirname, 'myfile.pdf'));
 ```
+#### Các Loại Test Hooks
++ `beforeAll`: Chạy một lần duy nhất trước khi tất cả các bài kiểm tra bắt đầu. Dùng để thiết lập trước tất cả các test.
++ `beforeEach`: Chạy trước mỗi bài kiểm tra trong một suite. Dùng để thiết lập trước mỗi test
++ `afterEach`: Chạy sau mỗi bài kiểm tra trong một suite. Dùng để kiểm tra sau mỗi test.
++ `afterAll`: Chạy một lần duy nhất sau khi tất cả các bài kiểm tra trong một suite đã được thực thi. Dùng để làm sạch sau tất cả các test.
+##### Lợi Ích của Test Hooks:
+1. Tái sử dụng mã: Bạn không cần phải viết lại các bước thiết lập và dọn dẹp trong mỗi test. Hooks giúp bạn tổ chức mã kiểm tra rõ ràng và giảm thiểu sự lặp lại.
+2. Kiểm soát tốt hơn: Bạn có thể dễ dàng chuẩn bị môi trường, kiểm tra các điều kiện trước và sau mỗi test, từ đó đảm bảo tính chính xác và tính toàn vẹn của mỗi bài kiểm tra.
+3. Dễ dàng duy trì: Nếu cần thay đổi cách thiết lập hoặc dọn dẹp môi trường, bạn chỉ cần chỉnh sửa một lần trong hooks thay vì mỗi bài kiểm tra riêng biệt.
+Ví dụ:
+```js
+import { test, expect } from '@playwright/test';
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  // Mở trình duyệt và điều hướng đến trang đăng nhập
+  page = await browser.newPage();
+  await page.goto('https://example.com/login');
+});
+
+test.beforeEach(async () => {
+  // Chắc chắn rằng trang đăng nhập luôn có sẵn trước mỗi test
+  await page.reload();
+});
+
+test.afterEach(async () => {
+  // Sau mỗi test, kiểm tra nếu có thông báo lỗi và làm sạch
+  const errorMessages = await page.locator('.error-message').count();
+  expect(errorMessages).toBe(0); // Đảm bảo không có lỗi
+});
+
+test.afterAll(async () => {
+  // Đóng trình duyệt sau khi tất cả các test đã hoàn thành
+  await page.close();
+});
+
+test('should log in successfully', async () => {
+  // Thực hiện đăng nhập
+  await page.fill('input[name="username"]', 'testuser');
+  await page.fill('input[name="password"]', 'password123');
+  await page.click('button[type="submit"]');
+
+  // Kiểm tra nếu chuyển hướng đến trang dashboard
+  await expect(page).toHaveURL('https://example.com/dashboard');
+});
+
+test('should show error for incorrect login', async () => {
+  // Thực hiện đăng nhập với thông tin sai
+  await page.fill('input[name="username"]', 'wronguser');
+  await page.fill('input[name="password"]', 'wrongpassword');
+  await page.click('button[type="submit"]');
+
+  // Kiểm tra thông báo lỗi
+  const errorMessage = await page.locator('.error-message').textContent();
+  expect(errorMessage).toBe('Invalid username or password');
+});
+```
 ---
 ## 5. Assertions
 Lời khuyên sử dụng
