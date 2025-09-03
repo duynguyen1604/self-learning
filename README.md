@@ -14,6 +14,8 @@ Welcome to the **Self Learning** project!!!
 2. [Xpath](./automation-test/DOM-&-XPath/xpath.md)
 #### **D. Framwork**
 1. [Playwright](./automation-test/Framwork/playwright.md)
+2. [Assertions](./automation-test/Framwork/Assertions.md)
+3. [POM](./automation-test/Framwork/POM.md)
 #### **E. JavaScript**
 1. [Variables, Comments, and Built-in Functions](./automation-test/java-script/01-variables-comments-built-in-functions.md)
 2. [JavaScript Operators and Data Types](./automation-test/java-script/02-javaScript-operators-and-data-types.md)
