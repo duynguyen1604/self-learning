@@ -39,7 +39,7 @@ hoặc **menu điều hướng** giống nhau.\
 Thay vì viết lại nhiều lần, ta có thể tạo **BasePage** để chứa các thành
 phần và hàm dùng chung.
 
-------------------------------------------------------------------------
+---
 
 ## 4. Ví dụ: BasePage
 
@@ -68,7 +68,7 @@ export class BasePage {
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 5. Trang con kế thừa BasePage
 
@@ -93,7 +93,7 @@ export class LoginPage extends BasePage {
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 6. Sử dụng trong Test
 
@@ -110,4 +110,4 @@ test('Đăng nhập thành công', async ({ page }) => {
 });
 ```
 
-------------------------------------------------------------------------
+---
